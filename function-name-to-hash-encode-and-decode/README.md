@@ -1,6 +1,6 @@
 <!--
- * @LastEditors: Bot80926
- * @LastEditTime: 2023-05-10 00:28:41
+ * @LastEditors: Jacky
+ * @LastEditTime: 2023-05-10 00:49:16
  * @FilePath: /contract-notebook/function-name-to-hash-encode-and-decode/README.md
  * Copyright (c) 2023 by Bot80926, All Rights Reserved.
 -->
@@ -80,7 +80,7 @@ const hashResult = ethers.utils.keccak256(textToUtf8Bytes)
 
 输出如下，除开 0x 的前四个bytes  `70a08231` 为我们要的目标函数的哈希：
 
-![](Img/img_3.png)
+![](Img/img_3_1.png)
 
 ## 反解哈希函数
 
