@@ -1,12 +1,11 @@
 <!--
  * @LastEditors: Bot80926
- * @LastEditTime: 2023-05-10 00:00:36
+ * @LastEditTime: 2023-05-10 00:28:41
  * @FilePath: /contract-notebook/function-name-to-hash-encode-and-decode/README.md
  * Copyright (c) 2023 by Bot80926, All Rights Reserved.
 -->
 
 ## Solidity中哈希函数的编码与解码
------
 
 ### 起因
 
@@ -21,6 +20,7 @@
 
 
 ## 哈希函数的前世今生
+
 
 这一个部分直接引用 WTF 课程里对哈希函数的描述，讲解的很详细。 感谢社区的力量 [github.com/AmazingAng/WTFSolidity](https://github.com/AmazingAng/WTF-Solidity/blob/main/28_Hash/readme.md)
 
@@ -92,3 +92,47 @@ const hashResult = ethers.utils.keccak256(textToUtf8Bytes)
   - Step1: [instal foundry](https://book.getfoundry.sh/getting-started/installation)
   - Step2: `cast 4b 70a08231`
   - ![](Img/img_5.png)
+
+
+## 补充知识：前端仔会在哪里用到哈希函数？
+
+答： **EIP-165** [规范文章](https://learnblockchain.cn/docs/eips/eip-165.html#%E8%A7%84%E8%8C%83)
+
+```solidity
+pragma solidity ^0.4.20;
+
+interface ERC165 {
+    /// @notice 查询一个合约时候实现了一个接口
+    /// @param interfaceID  参数：接口ID, 参考上面的定义
+    /// @return true 如果函数实现了 interfaceID (interfaceID 不为 0xffffffff )返回true, 否则为 false
+    function supportsInterface(bytes4 interfaceID) external view returns (bool);
+}
+```
+
+
+在 `EIP-165` 中 提议了标准化接口的概念，并标准化了接口标识。 这么说可能有些抽象。 翻译一下就是我们可以通过调用这个方法，知道该合约是否支持某个接口。 比如 对于 一个 `ERC-721` 标准的 NFT 来说， 我怎么知道他是否兼容支持 `ERC-2981` 呢 ?
+
+- 首先明确 [ERC-2981](https://eips.ethereum.org/EIPS/eip-2981) 对于 `ERC-721` 多了哪些能力？
+  - 可以为 NFT 设置版税， 新增了 `royaltyInfo(uint256,uint256)` 查询方法
+  - 那么我们就可以写下面这么一个函数，来判断 NFT 的 Fee
+  - 因为 function 定义了 `supportsInterface` 需要传入一个 bytes4 类型的数据，所以我们传入 `0x2a55205a`， 对应 `royaltyInfo(uint256,uint256)`。 如果返回 true， 则说明 这个 NFT 兼容了 ERC-2981 标准，我们可以查看它对应的版税费率。
+
+```javascript
+export const checkNftFeeAndGetFee = async ({ address, signer, tokenId }) => {
+  const abi = ["function supportsInterface(bytes4) public view returns(bool)"];
+  const checkContract = await createContract(address, abi, signer);
+  const isSupportErc2981 = await checkContract.supportsInterface(0x2a55205a);
+  let fee = 0;
+  if (isSupportErc2981) {
+    const nftContract = await createContract(address, erc2981ABI, signer);
+    const result = await nftContract.royaltyInfo(
+      tokenId,
+      "100000000000000000000" // 100 * 10 ** 18, 因为要算费率，直接按100块钱算，返回多少就是对应的费率，比如 1 就是 1% 费率，
+    );
+    fee = Number(result?.royaltyAmount) / 10 ** 18;
+  } else {
+    fee = 0;
+  }
+  return fee.toString();
+};
+```
