@@ -14,7 +14,7 @@ const main = async () => {
 
   console.log('textToUtf8Bytes =', textToUtf8Bytes + '\n')
 
-  console.log('方法一 output = ', ethers.utils.keccak256(textToUtf8Bytes) + '\n')
+  console.log('方法二 output = ', ethers.utils.keccak256(textToUtf8Bytes) + '\n')
 
   console.log('反解 textToUtf8Bytes = ', ethers.utils.toUtf8String(textToUtf8Bytes))
 
