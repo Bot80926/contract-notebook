@@ -8,11 +8,11 @@
 
 ## Directory
 
-- [function-name-to-hash-encode-and-decode](https://github.com/Bot80926/ethers-scripts/blob/main/script-1-create-wallet/index.js): 哈希函数的编码与解码
+- [function-name-to-hash-encode-and-decode](https://github.com/Bot80926/contract-notebook/tree/main/function-name-to-hash-encode-and-decode): 哈希函数的编码与解码
 
 **EN Directory**
 
-- [function-name-to-hash-encode-and-decode](https://github.com/Bot80926/ethers-scripts/blob/main/script-1-create-wallet/index.js): encode & decode hash function
+- [function-name-to-hash-encode-and-decode](https://github.com/Bot80926/contract-notebook/tree/main/function-name-to-hash-encode-and-decode): encode & decode hash function
 
 
 ## Maintainers
