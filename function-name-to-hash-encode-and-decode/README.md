@@ -1,5 +1,5 @@
 <!--
- * @LastEditors: Jacky
+ * @LastEditors:Bot80926
  * @LastEditTime: 2023-05-10 00:49:16
  * @FilePath: /contract-notebook/function-name-to-hash-encode-and-decode/README.md
  * Copyright (c) 2023 by Bot80926, All Rights Reserved.
