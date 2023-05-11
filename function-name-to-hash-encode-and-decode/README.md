@@ -1,6 +1,6 @@
 <!--
- * @LastEditors:Bot80926
- * @LastEditTime: 2023-05-10 00:49:16
+ * @LastEditors: Bot80926
+ * @LastEditTime: 2023-05-11 23:06:57
  * @FilePath: /contract-notebook/function-name-to-hash-encode-and-decode/README.md
  * Copyright (c) 2023 by Bot80926, All Rights Reserved.
 -->
@@ -136,3 +136,33 @@ export const checkNftFeeAndGetFee = async ({ address, signer, tokenId }) => {
   return fee.toString();
 };
 ```
+
+----
+
+#### 判断是否是ERC721标准合约
+
+  ERC721接口的 ERC165 identifier 为： `0x80ac58cd`，下面代码是计算该 `identifier` 的方法。
+
+```solidity
+  bytes4 constant InterfaceSignature_ERC721 = 0x80ac58cd;
+    /*
+    bytes4(keccak256('balanceOf(address)')) ^
+    bytes4(keccak256('ownerOf(uint256)')) ^
+    bytes4(keccak256('approve(address,uint256)')) ^
+    bytes4(keccak256('getApproved(uint256)')) ^
+    bytes4(keccak256('setApprovalForAll(address,bool)')) ^
+    bytes4(keccak256('isApprovedForAll(address,address)')) ^
+    bytes4(keccak256('transferFrom(address,address,uint256)')) ^
+    bytes4(keccak256('safeTransferFrom(address,address,uint256)')) ^
+    bytes4(keccak256('safeTransferFrom(address,address,uint256,bytes)'));
+    */
+```
+
+有了上面的 `identifier` ， 我们可以识别合约是否为 ERC721 标准合约
+
+```javascript
+const selectorERC721 = "0x80ac58cd"
+const isERC721 = await contractERC721.supportsInterface(selectorERC721)
+console.log(`合约是否为ERC721标准: ${isERC721}`)
+```
+
